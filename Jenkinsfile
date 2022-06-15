@@ -14,8 +14,8 @@ pipeline {
         }
         stage('Start container') {
             steps {
-                sh 'docker compose up'
-                sh 'docker compose ps'
+                sh 'docker-compose up'
+                sh 'docker-compose ps'
             }
         }
         stage('Login') {
@@ -31,7 +31,7 @@ pipeline {
     }
     post {
         always {
-            sh 'docker compose down --remove-orphans -v'
+            sh 'docker-compose down --remove-orphans -v'
             sh 'docker ps'
             sh 'docker logout'
         }
