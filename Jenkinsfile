@@ -12,6 +12,12 @@ pipeline {
                 sh 'docker build -t dejansukalo/ds-alpine:latest .'
             }
         }
+        stage('Start container') {
+            steps {
+                sh 'docker compose up -d --no-color --wait'
+                sh 'docker compose ps'
+            }
+        }
         stage('Login') {
             steps {
                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
@@ -25,6 +31,8 @@ pipeline {
     }
     post {
         always {
+            sh 'docker compose down --remove-orphans -v'
+            sh 'docker ps'
             sh 'docker logout'
         }
     }
